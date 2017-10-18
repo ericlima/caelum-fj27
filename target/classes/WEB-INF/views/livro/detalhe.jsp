@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -35,7 +36,7 @@
          value = "${livro.dataLancamento.time}" /></label>
 		</div>
 		
-		<form action="/casadocodigo/carrinho" method="post" class="container">
+		<form:form servletRelativeAction="/casadocodigo/carrinho" method="post" class="container">
 				<input type="hidden" value="${livro.id}" name="id"/>
 				<ul id="variants" class="clearfix">
 					<c:forEach items="${livro.precos}" var="preco">
@@ -52,7 +53,7 @@
 				</ul>
 
 				<input type="submit" class="submit-image icon-basket-alt" alt="Compre agora" title="Compre agora '${livro.titulo}'!" value="comprar"/>
-		</form>	
+		</form:form>	
 		
 		
 		

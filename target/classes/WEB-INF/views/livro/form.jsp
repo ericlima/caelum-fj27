@@ -11,7 +11,7 @@
 </head>
 <body>
 	<!-- ${spring:mvcUrl('LC#salvar').build()} -->
-	<form:form action="/casadocodigo/livros" method="post" commandName="livro" enctype="multipart/form-data" > 
+	<form:form servletRelativeAction="/casadocodigo/livros" method="post" commandName="livro" enctype="multipart/form-data" > 
 
 		<div>
 		

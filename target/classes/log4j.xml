@@ -16,6 +16,6 @@
 	</root>
 	
 	<logger name="org.springframework" >
-		<level value="debug"></level>
+		<level value="info"></level>
 	</logger>
 </log4j:configuration>
