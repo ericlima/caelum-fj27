@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebMvcSecurity
@@ -23,11 +24,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+		.regexMatchers("/livros/form[\\.]?").hasRole("ADMIN")
+		.antMatchers("/carrinho/***").permitAll()
+		.antMatchers("/carrinho/checkout/***").permitAll()
+		.antMatchers(HttpMethod.POST, "/livros").hasRole("ADMIN")
+		.antMatchers("/livros/***").permitAll()
+		.antMatchers("/login2").permitAll()
+		.anyRequest().authenticated()
+		.and().formLogin().loginPage("/login").defaultSuccessUrl("/livros").permitAll()
+		.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+		.and().exceptionHandling()
+		.accessDeniedPage("/WEB-INF/erros/403.jsp");
+	}
 	
-	public void Configure(HttpSecurity http) throws Exception {
-		
-		http.authorizeRequests().antMatchers("/livros").permitAll();
-		
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//		
+//		//http.authorizeRequests().antMatchers("/livros").permitAll();
+//		
 //		http.authorizeRequests()
 //		.antMatchers("/livros/form").hasRole("ADMIN")
 //		.antMatchers("/carrinho/**").permitAll()
@@ -35,12 +52,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //		.antMatchers("/livros/**").permitAll()
 //		.antMatchers("/login2").permitAll()
 //		.anyRequest().authenticated()
-//		.and().formLogin().loginPage("/login").permitAll()
-//		//.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//		//.logoutSuccessUrl("/login").permitAll()
+//		.and().formLogin().loginPage("/login").defaultSuccessUrl("/livros").permitAll()
+//		.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//		.logoutSuccessUrl("/login").permitAll()
 //		.and().exceptionHandling()
 //		.accessDeniedPage("/WEB-INF/erros/403.jsp");
-	}
+//		
+//	}
 
 	
 	
