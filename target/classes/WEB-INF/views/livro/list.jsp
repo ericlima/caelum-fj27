@@ -1,59 +1,32 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%@ taglib tagdir="/WEB-INF/tags" prefix="cdc" %>
 
-<title>${product.title}</title>
+<cdc:page title="listagem de livros">
 
-<c:url value="/" var="contextPath" />
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="usuario"/><fmt:message key="ola"/> ${usuario.name}
+	</sec:authorize>
 
-<link rel="icon"
-	href="//cdn.shopify.com/s/files/1/0155/7645/t/177/assets/favicon.ico?11981592617154272979"
-	type="image/ico" />
-<link href="https://plus.googlecom/108540024862647200608"
-	rel="publisher" />
-<link href="${contextPath}resources/css/cssbase-min.css"
-	rel="stylesheet" type="text/css" media="all" />
-<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700'
-	rel='stylesheet' />
-<link href="${contextPath}resources/css/fonts.css" rel="stylesheet"
-	type="text/css" media="all" />
-<link href="${contextPath}resources/css/fontello-ie7.css"
-	rel="stylesheet" type="text/css" media="all" />
-<link href="${contextPath}resources/css/fontello-embedded.css"
-	rel="stylesheet" type="text/css" media="all" />
-<link href="${contextPath}resources/css/fontello.css" rel="stylesheet"
-	type="text/css" media="all" />
-<link href="${contextPath}resources/css/style.css" rel="stylesheet"
-	type="text/css" media="all" />
-<link href="${contextPath}resources/css/layout-colors.css"
-	rel="stylesheet" type="text/css" media="all" />
-<link href="${contextPath}resources/css/responsive-style.css"
-	rel="stylesheet" type="text/css" media="all" />
-<link href="${contextPath}resources/css/guia-do-programador-style.css"
-	rel="stylesheet" type="text/css" media="all" />
-<link href="${contextPath}resources/css/produtos.css" rel="stylesheet"
-	type="text/css" media="all" />
-<link rel="canonical" href="http://www.casadocodigo.com.br/" />
-</head>
-<body>
+	
 
 	<div>${msg}</div>
 
 	<div>
-		Seu carrinho (${shoppingCart.quantity})<br />
+		<fmt:message key="carrinho"/> (${shoppingCart.quantity})<br />
 	</div>
 
 	<table>
 
 		<tr>
-			<th>titulo</th>
-			<th>preços</th>
+			<th><fmt:message key="titulo"/></th>
+			<th><fmt:message key="precos"/></th>
 
 			<c:forEach items="${livro.precos}" var="preco">
 				<th align="right">${preco.tipo}</th>
@@ -78,15 +51,21 @@
 	</table>
 
 	<br />
-	<form:form action="/casadocodigo/carrinho/checkout" method="post">
+	
+	<c:url value="/" var="contextPath" />
+	
+	<form:form ="${contextPath}/carrinho/checkout" method="post">
 		<input type="submit" value="Checkout">
 	</form:form>
 
 	<sec:authorize access="hasRole('ADMIN')">
-		<c:url value="/products/form" var="cadastro"/>
-		<a href="${cadastro}">Cadastrar Livro</a>
+		<c:url value="/livros/form" var="cadastro"/>
+		<a href="${cadastro}"><fmt:message key="cadastro"></fmt:message></a>
 	</sec:authorize>
 	
+	
+	
+	<a href="${contextPath}/livros?locale=en_US">English</a>
+	<a href="${contextPath}/livros?locale=pt_BR">Português</a>
 
-</body>
-</html>
+</cdc:page>
