@@ -1,13 +1,20 @@
 package br.com.casadocodigo.loja.dao;
 
-import static org.junit.Assert.*;
-
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import br.com.casadocodigo.loja.conf.DataSourceConfigurationTest;
+import br.com.casadocodigo.loja.conf.JpaConfig;
 import br.com.casadocodigo.models.Livro;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {LivroDAO.class, JpaConfig.class, DataSourceConfigurationTest.class})
+@ActiveProfiles("test")
 public class LivroDAOTest {
 	
 	@Autowired
@@ -15,14 +22,15 @@ public class LivroDAOTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+
 		Livro livro = new Livro();
 		
 		livro.setTitulo("Novo livro");
 		
 		livroDAO.save(livro);
 		
-		Assert.assertArrayEquals(1, actuals);
+		Assert.assertEquals(1, livroDAO.listar().size());
+		
 	}
 
 }
